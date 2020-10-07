@@ -1,2 +1,12 @@
-Programming Languages are formal languages which are designed to express computations.
+Programming Languages are FORMAL LANGUAGES which are designed to express computations.
+
+Python follow PEMDAS i.e Parentheses, Exponentiation, (Multiplication, Division), (Addition, Subtraction)
+If operators have same precedence like  (Multiplication, Division) then they are evaluated left to right.
+Eg - 20/4*2 ## First Division then multiplication --> 10.0
+20*4/20     ## First Multiplication then division --> 4.0
+
+String Concatenation - +
+String Repetition    - *
+
+
 
