@@ -10,3 +10,8 @@
 
 #Exponentiation
 6**2+6 ## 42, int
+
+### To get the type of a variable or value
+type(2.2)       # <class 'float'>
+type('string')  #<class 'str'>
+type(2)         # <class 'int'>
