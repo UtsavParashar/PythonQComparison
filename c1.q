@@ -32,5 +32,16 @@ type 2          /- -7h
 /- Copy Px - 29.9, total copies - 80, discount - 30%, first copy shipping cost - 5, rest copies shipping cost - 0.8
 (79*0.8)+5+29.9*80*.7
 
-/-
+/- start run at 6:52, first and last lap = 8 min 15 secs, between 3 laps = 7 min 12 secs, Reached home at what time?
+sth:6;stm:52;
+rt:(2*15+8*60)+3*12+7*60;
+rtm:floor rt%60;
+rts:0.1*60;
+mi:52+rtm;
+if[60<mi;sth+:1;mi-:60];
+raze (string(sth),":",(string(mi)),":",string(rts))
+
+
+
+
 
