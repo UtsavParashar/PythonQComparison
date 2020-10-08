@@ -15,3 +15,4 @@
 type(2.2)       # <class 'float'>
 type('string')  #<class 'str'>
 type(2)         # <class 'int'>
+

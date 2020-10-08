@@ -8,5 +8,7 @@ Eg - 20/4*2 ## First Division then multiplication --> 10.0
 String Concatenation - +
 String Repetition    - *
 
+3 types of error - Syntax, runtime(exception) and semantic(program will not halt but output won't be expected).
+
 
 
