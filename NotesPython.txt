@@ -10,5 +10,6 @@ String Repetition    - *
 
 3 types of error - Syntax, runtime(exception) and semantic(program will not halt but output won't be expected).
 
+It is common to say that a function takes an argument and returns a result.
 
 
