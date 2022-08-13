@@ -151,4 +151,36 @@ for x, y in val_univariate.take(5): # take 5 random inputs from validation data
                     simple_lstm_model.predict(x)[0]], 0, 'Simple LSTM model')
   plot.show()
 
+###
+# plotting function
+def multi_step_plot(history, true_future, prediction):
+    plt.figure(figsize=(12, 6))
+    num_in = create_time_steps(len(history))
+    num_out = len(true_future)
+    plt.grid()
+    plt.plot(num_in, np.array(history[:, 1]), label='History')
+    plt.plot(np.arange(num_out) / STEP, np.array(true_future), 'bo',
+             label='True Future')
+    if prediction.any():
+        plt.plot(np.arange(num_out) / STEP, np.array(prediction), 'ro',
+                 label='Predicted Future')
+    plt.legend(loc='upper left')
+    plt.show()
 
+
+for x, y in train_data_multi.take(1):
+    multi_step_plot(x[0], y[0], np.array([0]))
+
+multi_step_model = tf.keras.models.Sequential()
+multi_step_model.add(tf.keras.layers.LSTM(32,
+                                          return_sequences=True,
+                                          input_shape=x_train_multi.shape[-2:]))
+multi_step_model.add(tf.keras.layers.LSTM(16, activation='relu'))
+multi_step_model.add(tf.keras.layers.Dense(72)) # for 72 outputs
+
+multi_step_model.compile(optimizer=tf.keras.optimizers.RMSprop(clipvalue=1.0), loss='mae')
+
+multi_step_history = multi_step_model.fit(train_data_multi, epochs=EPOCHS,
+                                          steps_per_epoch=STEPS_PER_EPOCH,
+                                          validation_data=val_data_multi,
+                                          validation_steps=50)
