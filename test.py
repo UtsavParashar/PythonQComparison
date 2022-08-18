@@ -210,17 +210,10 @@ def multivariate_data(dataset, target, start_index, end_index, history_size,
   return np.array(data), np.array(labels)
 
 # Generate data
-#past_history = 720 # 720*10 mins
-#future_target = 72 # 72*10 mins
-#STEP = 6 # one obs every 6X10min = 60 min => 1 hr
-
-#past_history = 8760 # 720*10 mins
-#future_target = 72 # 72*10 mins
-#STEP = 36 # one obs every 36X10min = 360 min => 6 hr
-
-past_history = 13140 # 720*10 mins
+past_history = 720 # 720*10 mins
 future_target = 72 # 72*10 mins
-STEP = 36 # one obs every 36X10min = 360 min => 6 hr
+STEP = 6 # one obs every 6X10min = 60 min => 1 hr
+
 
 # past history: 7200 mins => 120 hrs, sampling at one sample evry hours
 # future_target: 720 mins = > 12 hrs in the future, not next hour
