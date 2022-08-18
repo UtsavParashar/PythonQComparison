@@ -184,3 +184,79 @@ multi_step_history = multi_step_model.fit(train_data_multi, epochs=EPOCHS,
                                           steps_per_epoch=STEPS_PER_EPOCH,
                                           validation_data=val_data_multi,
                                           validation_steps=50)
+
+
+# Mutivariate data
+
+
+def multivariate_data(dataset, target, start_index, end_index, history_size,
+                      target_size, step, single_step=False):
+  data = []
+  labels = []
+
+  start_index = start_index + history_size
+  if end_index is None:
+    end_index = len(dataset) - target_size
+
+  for i in range(start_index, end_index):
+    indices = range(i-history_size, i, step) # step used here.
+    data.append(dataset[indices])
+
+    if single_step: # single_step used here.
+      labels.append(target[i+target_size])
+    else:
+      labels.append(target[i:i+target_size])
+
+  return np.array(data), np.array(labels)
+
+# Generate data
+#past_history = 720 # 720*10 mins
+#future_target = 72 # 72*10 mins
+#STEP = 6 # one obs every 6X10min = 60 min => 1 hr
+
+#past_history = 8760 # 720*10 mins
+#future_target = 72 # 72*10 mins
+#STEP = 36 # one obs every 36X10min = 360 min => 6 hr
+
+past_history = 13140 # 720*10 mins
+future_target = 72 # 72*10 mins
+STEP = 36 # one obs every 36X10min = 360 min => 6 hr
+
+# past history: 7200 mins => 120 hrs, sampling at one sample evry hours
+# future_target: 720 mins = > 12 hrs in the future, not next hour
+
+x_train_single, y_train_single = multivariate_data(dataset, dataset[:, 1], 0,
+                                                   TRAIN_SPLIT, past_history,
+                                                   future_target, STEP,
+                                                   single_step=True)
+x_val_single, y_val_single = multivariate_data(dataset, dataset[:, 1],
+                                               TRAIN_SPLIT, None, past_history,
+                                               future_target, STEP,
+                                               single_step=True)
+
+print(x_train_single.shape)
+print(y_train_single.shape)
+
+
+
+train_data_single = tf.data.Dataset.from_tensor_slices((x_train_single, y_train_single))
+train_data_single = train_data_single.cache().shuffle(BUFFER_SIZE).batch(BATCH_SIZE).repeat()
+
+val_data_single = tf.data.Dataset.from_tensor_slices((x_val_single, y_val_single))
+val_data_single = val_data_single.batch(BATCH_SIZE).repeat()
+
+print(train_data_single)
+print(val_data_single)
+
+
+single_step_model = tf.keras.models.Sequential()
+single_step_model.add(tf.keras.layers.LSTM(32,
+                                           input_shape=x_train_single.shape[-2:]))
+single_step_model.add(tf.keras.layers.Dense(1))
+
+single_step_model.compile(optimizer=tf.keras.optimizers.RMSprop(), loss='mae')
+
+single_step_history = single_step_model.fit(train_data_single, epochs=EPOCHS,
+                                            steps_per_epoch=STEPS_PER_EPOCH,
+                                            validation_data=val_data_single,
+                                            validation_steps=50)
